@@ -126,7 +126,7 @@ impl<G: Guard> Aligned<G> {
         unsafe {
             let ptr = self.guard.read_ptr();
             let len = self.guard.len();
-            slice::from_raw_parts(ptr, len)
+            crate::from_raw_parts(ptr, len)
         }
     }
 
@@ -138,7 +138,7 @@ impl<G: Guard> Aligned<G> {
         unsafe {
             let ptr = self.guard.read_ptr() as *mut G::Target;
             let len = self.guard.len();
-            slice::from_raw_parts_mut(ptr, len)
+            crate::from_raw_parts_mut(ptr, len)
         }
     }
 }

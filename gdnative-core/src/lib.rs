@@ -62,3 +62,19 @@ pub mod profiler;
 /// Internal low-level API for use by macros and generated bindings. Not a part of the public API.
 #[doc(hidden)]
 pub mod private;
+
+pub const unsafe fn from_raw_parts<'a, T>(data: *const T, len: usize) -> &'a [T] {
+    if len > 0 {
+        std::slice::from_raw_parts(data, len as usize)
+    } else {
+        &[]
+    }
+}
+
+pub unsafe fn from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> &'a mut [T] {
+    if len > 0 {
+        std::slice::from_raw_parts_mut(data, len as usize)
+    } else {
+        &mut []
+    }
+}

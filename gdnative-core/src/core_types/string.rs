@@ -473,7 +473,7 @@ impl Utf8String {
     pub fn as_bytes(&self) -> &[u8] {
         unsafe {
             let data = (get_api().godot_char_string_get_data)(&self.0) as _;
-            slice::from_raw_parts(data, self.len() as usize)
+            crate::from_raw_parts(data, self.len() as usize)
         }
     }
 

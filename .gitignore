@@ -13,6 +13,7 @@ target
 test/project/lib/*
 !test/project/lib/.gitkeep
 **/.import/*
+*.import
 /logs
 
 # OS-specific
@@ -20,3 +21,4 @@ test/project/lib/*
 
 # User stuff
 /ignore
+

@@ -315,21 +315,40 @@ impl<'a> Varargs<'a> {
         }
     }
 
-    /// Create a typed interface from raw pointers. This is an internal interface.
-    ///
-    /// # Safety
-    ///
-    /// `args` must point to an array of valid `godot_variant` pointers of at least `num_args` long.
-    #[doc(hidden)]
-    #[inline]
     pub unsafe fn from_sys(num_args: libc::c_int, args: *mut *mut sys::godot_variant) -> Self {
-        let args = std::slice::from_raw_parts(args, num_args as usize);
+        let args = Self::safe_args(num_args, args);
         let args = std::mem::transmute::<&[*mut sys::godot_variant], &[&Variant]>(args);
         Self {
             idx: 0,
             args,
             offset_index: 0,
         }
+    }
+
+    /// Convert args to a slice in debug builds - avoids crash when using Rust 1.78 and beyond
+    #[doc(hidden)]
+    #[inline]
+    #[cfg(debug_assertions)]
+    unsafe fn safe_args(
+        num_args: libc::c_int,
+        args: *mut *mut sys::godot_variant,
+    ) -> &'a [*mut sys::godot_variant] {
+        if num_args > 0 {
+            std::slice::from_raw_parts(args, num_args as usize)
+        } else {
+            &[]
+        }
+    }
+
+    /// Convert args to a slice in release builds - using more effecient code than the version above
+    #[doc(hidden)]
+    #[inline]
+    #[cfg(not(debug_assertions))]
+    unsafe fn safe_args(
+        num_args: libc::c_int,
+        args: *mut *mut sys::godot_variant,
+    ) -> &'a [*mut sys::godot_variant] {
+        std::slice::from_raw_parts(args, num_args as usize)
     }
 
     /// Check the length of arguments.

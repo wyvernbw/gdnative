@@ -1,3 +1,31 @@
+# Fork status
+
+I forked this repo to make a quick fix for the ub checks added in newer rust versions.
+
+All i did was add these 2 functions to the `gdnative-core` crate:
+```rust
+
+pub const unsafe fn from_raw_parts<'a, T>(data: *const T, len: usize) -> &'a [T] {
+    if len > 0 {
+        std::slice::from_raw_parts(data, len as usize)
+    } else {
+        &[]
+    }
+}
+
+pub unsafe fn from_raw_parts_mut<'a, T>(data: *mut T, len: usize) -> &'a mut [T] {
+    if len > 0 {
+        std::slice::from_raw_parts_mut(data, len as usize)
+    } else {
+        &mut []
+    }
+}
+
+```
+
+And replace all uses of `std::slice::from_raw_parts` (and the `mut` ver.) with my wrappers. 
+
+
 # GDNative bindings for Rust
 
 <a href="https://godot-rust.github.io/"><img align="right" width="200" height="200" src="assets/godot-ferris.svg"></a>

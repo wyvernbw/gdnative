@@ -1,5 +1,8 @@
 # Fork status
 
+**Update:**
+You might get an error even with this fix. In such cases, you have to compile in release mode.
+
 I forked this repo to make a quick fix for the ub checks added in newer rust versions.
 
 All i did was add these 2 functions to the `gdnative-core` crate:

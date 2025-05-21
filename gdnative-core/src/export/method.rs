@@ -334,7 +334,7 @@ impl<'a> Varargs<'a> {
         args: *mut *mut sys::godot_variant,
     ) -> &'a [*mut sys::godot_variant] {
         if num_args > 0 {
-            std::slice::from_raw_parts(args, num_args as usize)
+            crate::from_raw_parts(args, num_args as usize)
         } else {
             &[]
         }
@@ -348,7 +348,7 @@ impl<'a> Varargs<'a> {
         num_args: libc::c_int,
         args: *mut *mut sys::godot_variant,
     ) -> &'a [*mut sys::godot_variant] {
-        std::slice::from_raw_parts(args, num_args as usize)
+        crate::from_raw_parts(args, num_args as usize)
     }
 
     /// Check the length of arguments.
